@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=AnimeVerse
+Comment=Discover Amazing Anime Movies and Series
+Exec=animeverse %U
+Icon=animeverse
+Terminal=false
+Type=Application
+Categories=AudioVideo;Entertainment;Network;
+MimeType=x-scheme-handler/animeverse;
+Keywords=anime;entertainment;streaming;movies;series;manga;
+StartupWMClass=AnimeVerse
+StartupNotify=true

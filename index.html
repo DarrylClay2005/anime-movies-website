@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeVerse - Discover Amazing Anime</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    /* Enhanced functionality styles */
+    .bookmark-btn, .watch-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: var(--transition);
+        position: absolute;
+        top: 10px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .bookmark-btn {
+        right: 10px;
+    }
+    
+    .watch-btn {
+        right: 60px;
+        width: auto;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+    }
+    
+    .anime-card:hover .watch-btn {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .bookmark-btn:hover, .watch-btn:hover {
+        background: rgba(255, 107, 107, 0.8);
+        color: var(--text-primary);
+        transform: scale(1.1);
+    }
+    
+    .bookmark-btn.bookmarked {
+        background: var(--accent-color);
+        color: var(--text-primary);
+    }
+    
+    .streaming-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .streaming-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: var(--transition);
+        font-weight: 500;
+    }
+    
+    .streaming-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+        .watch-btn {
+            position: static;
+            opacity: 1;
+            transform: none;
+            margin-top: 0.5rem;
+        }
+        
+        .bookmark-btn {
+            position: static;
+            margin-top: 0.5rem;
+        }
+    }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="floating-particles"></div>
+        <div class="gradient-orbs"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-torii-gate"></i>
+                <span class="logo-text">AnimeVerse</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-section="home">Home</a>
+                <a href="#" class="nav-link" data-section="search">Search</a>
+                <a href="#" class="nav-link" data-section="trending">Trending</a>
+                <a href="#" class="nav-link" data-section="watchlist">Watchlist</a>
+                <a href="#" class="nav-link mature-section" data-section="hentai">
+                    <i class="fas fa-shield-alt"></i> 18+
+                </a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Discover</span>
+                    <span class="typing-animation">Amazing Anime</span>
+                </h1>
+                <p class="hero-subtitle">Explore thousands of anime movies, series, and discover your next favorite adventure</p>
+                <div class="hero-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="hero-search" placeholder="Search for anime, movies, series..." maxlength="100">
+                        <button id="search-btn" class="search-button">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-anime">25,000+</span>
+                        <span class="stat-label">Anime Titles</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-users">1M+</span>
+                        <span class="stat-label">Happy Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.9★</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-anime-cards">
+                    <div class="anime-card-float card-1"></div>
+                    <div class="anime-card-float card-2"></div>
+                    <div class="anime-card-float card-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Sections -->
+        <main class="content-wrapper">
+            <!-- Loading Animation -->
+            <div id="loading-overlay" class="loading-overlay hidden">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <p class="loading-text">Searching the anime universe...</p>
+            </div>
+
+            <!-- Search Results Section -->
+            <section id="search-results" class="content-section hidden">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-search-plus"></i>
+                        Search Results
+                    </h2>
+                    <div class="results-info">
+                        <span id="results-count">0 results</span>
+                        <button id="clear-search" class="clear-btn">
+                            <i class="fas fa-times"></i>
+                            Clear Search
+                        </button>
+                    </div>
+                </div>
+                <div id="search-grid" class="anime-grid"></div>
+                <div id="load-more-container" class="load-more-container hidden">
+                    <button id="load-more-btn" class="load-more-btn">
+                        <i class="fas fa-plus"></i>
+                        Load More Results
+                    </button>
+                </div>
+            </section>
+
+            <!-- Featured/Random Section -->
+            <section id="featured-section" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Featured Anime
+                    </h2>
+                    <div class="section-controls">
+                        <button id="refresh-featured" class="control-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <select id="category-filter" class="category-select">
+                            <option value="all">All Categories</option>
+                            <option value="movie">Movies</option>
+                            <option value="tv">TV Series</option>
+                            <option value="ova">OVA</option>
+                            <option value="special">Specials</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="featured-grid" class="anime-grid"></div>
+            </section>
+
+            <!-- Trending Section -->
+            <section id="trending-section" class="content-section hidden">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-fire"></i>
+                        Trending Now
+                    </h2>
+                    <div class="section-controls">
+                        <button id="refresh-trending" class="control-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <select id="trending-filter" class="category-select">
+                            <option value="airing">Currently Airing</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="bypopularity">Most Popular</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="trending-grid" class="anime-grid"></div>
+            </section>
+
+            <!-- Watchlist Section -->
+            <section id="watchlist-section" class="content-section hidden">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-bookmark"></i>
+                        My Watchlist
+                    </h2>
+                    <div class="section-controls">
+                        <button id="clear-watchlist" class="control-btn">
+                            <i class="fas fa-trash"></i>
+                            Clear All
+                        </button>
+                        <span class="watchlist-count">0 items</span>
+                    </div>
+                </div>
+                <div id="watchlist-empty" class="empty-state">
+                    <i class="fas fa-bookmark"></i>
+                    <h3>Your Watchlist is Empty</h3>
+                    <p>Click the bookmark icon on any anime to add it to your watchlist!</p>
+                </div>
+                <div id="watchlist-grid" class="anime-grid"></div>
+            </section>
+
+            <!-- Hentai/Adult Section -->
+            <section id="hentai-section" class="content-section hidden mature-content">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Adult Content (18+)
+                    </h2>
+                    <div class="section-controls">
+                        <button id="refresh-hentai" class="control-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <div class="mature-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Adults Only
+                        </div>
+                    </div>
+                </div>
+                <div class="mature-disclaimer">
+                    <p><i class="fas fa-info-circle"></i> This section contains mature content intended for adults aged 18 and over.</p>
+                </div>
+                <div id="hentai-grid" class="anime-grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Age Verification Modal -->
+    <div id="age-modal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle warning-icon"></i>
+                <h3>Age Verification Required</h3>
+            </div>
+            <div class="modal-content">
+                <p>This content contains mature themes and is intended for adults only.</p>
+                <p>Please confirm your age to continue:</p>
+                <div class="age-input-container">
+                    <input type="number" id="age-input" placeholder="Enter your age" min="1" max="120">
+                    <span class="age-suffix">years old</span>
+                </div>
+                <div class="modal-actions">
+                    <button id="age-cancel" class="btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                    <button id="age-confirm" class="btn-primary">
+                        <i class="fas fa-check"></i>
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Anime Detail Modal -->
+    <div id="detail-modal" class="modal-overlay hidden">
+        <div class="detail-modal-container">
+            <button class="modal-close" id="close-detail">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="detail-content" id="detail-content">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
